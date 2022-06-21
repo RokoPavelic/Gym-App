@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+
 import { exerciseOptions, fetchData } from "../utils/fetchData";
-import HorizontalScrollBar from "./HorizontalScrollBar";
+import HorizontalScrollbar from "./HorizontalScrollbar";
 
-const SearchExercises = (setExercises, bodyPart, setBodyPart) => {
+const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
   const [search, setSearch] = useState("");
-
   const [bodyParts, setBodyParts] = useState([]);
 
   useEffect(() => {
@@ -14,6 +14,7 @@ const SearchExercises = (setExercises, bodyPart, setBodyPart) => {
         "https://exercisedb.p.rapidapi.com/exercises/bodyPartList",
         exerciseOptions
       );
+
       setBodyParts(["all", ...bodyPartsData]);
     };
 
@@ -27,16 +28,18 @@ const SearchExercises = (setExercises, bodyPart, setBodyPart) => {
         exerciseOptions
       );
 
-      const searhedExercises = exercisesData.filter(
-        (exercise) =>
-          exercise.name.toLowerCase().includes(search) ||
-          exercise.target.toLowerCase().includes(search) ||
-          exercise.equipment.toLowerCase().includes(search) ||
-          exercise.bodyPart.toLowerCase().includes(search)
+      const searchedExercises = exercisesData.filter(
+        (item) =>
+          item.name.toLowerCase().includes(search) ||
+          item.target.toLowerCase().includes(search) ||
+          item.equipment.toLowerCase().includes(search) ||
+          item.bodyPart.toLowerCase().includes(search)
       );
 
+      window.scrollTo({ top: 1800, left: 100, behavior: "smooth" });
+
       setSearch("");
-      setExercises(searhedExercises);
+      setExercises(searchedExercises);
     }
   };
 
@@ -55,7 +58,7 @@ const SearchExercises = (setExercises, bodyPart, setBodyPart) => {
           height="76px"
           sx={{
             input: { fontWeight: "700", border: "none", borderRadius: "4px" },
-            width: { lg: "800px", xs: "350px" },
+            width: { lg: "1170px", xs: "350px" },
             backgroundColor: "#fff",
             borderRadius: "40px",
           }}
@@ -82,10 +85,11 @@ const SearchExercises = (setExercises, bodyPart, setBodyPart) => {
         </Button>
       </Box>
       <Box sx={{ position: "relative", width: "100%", p: "20px" }}>
-        <HorizontalScrollBar
+        <HorizontalScrollbar
           data={bodyParts}
-          bodyPart={bodyPart}
+          bodyParts
           setBodyPart={setBodyPart}
+          bodyPart={bodyPart}
         />
       </Box>
     </Stack>
